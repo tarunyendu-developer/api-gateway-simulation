@@ -1,204 +1,273 @@
 # 🚀 API Gateway Simulation System – Spring Boot
 
-## 📌 Project Overview
+## 📌 Overview
 
-The API Gateway Simulation System is a Spring Boot-based application that simulates the behavior of an API Gateway. It receives incoming HTTP requests, validates them using an API key, routes them to appropriate internal services (User, Product, Order), and logs all request details into a database.
+This project is a **Spring Boot-based API Gateway Simulation System** that demonstrates how an API Gateway works in a microservices architecture. The application receives incoming HTTP requests, validates them using a custom API key, routes them to appropriate internal services (User, Product, Order), and logs all request details into a database.
 
-This project demonstrates key backend concepts such as routing, security, logging, layered architecture, and RESTful API design.
-
----
-
-## 🎯 Features
-
-### ✅ API Gateway Functionality
-
-* Routes requests based on URL path:
-
-    * `/api/users`
-    * `/api/products`
-    * `/api/orders`
-    * `/api/logs`
-
-### ✅ CRUD Operations
-
-* User Service (Create, Read, Delete)
-* Product Service (Create, Read, Delete)
-* Order Service (Create, Read, Delete)
-
-### ✅ API Key Security
-
-* Implemented using `OncePerRequestFilter`
-* Validates `X-API-KEY` header for every request
-* Rejects unauthorized requests with **401 Unauthorized**
-
-### ✅ Request Logging
-
-* Logs every API request with:
-
-    * Request URL
-    * HTTP Method
-    * Timestamp
-    * Response Status
-* Stores logs in database (`request_logs` table)
-
-### ✅ Validation
-
-* Input validation using:
-
-    * `@NotBlank`
-    * `@Email`
-* Ensures proper request data
-
-### ✅ Exception Handling
-
-* Global exception handler for:
-
-    * Clean error responses
-    * Proper HTTP status codes
-
-### ✅ Layered Architecture
-
-* Controller → Service → Repository → Entity
+The project follows a **layered architecture (Controller → Service → Repository → Entity)** and integrates with a **MySQL database**.
 
 ---
 
-## 🛠️ Technologies Used
+## 🎯 Objective
 
-* Java 17
-* Spring Boot
-* Spring Web
-* Spring Data JPA
-* MySQL
-* Lombok
-* Maven
+To simulate the behavior of an API Gateway by:
 
----
-
-## 🗄️ Database Tables
-
-### 1. Users
-
-* id
-* name
-* email
-* role
-* created_at
-
-### 2. Products
-
-* id
-* name
-* category
-* price
-* stock
-* created_at
-
-### 3. Orders
-
-* id
-* user_id
-* product
-* quantity
-* total_price
-* status
-* created_at
-
-### 4. Request Logs
-
-* id
-* request_url
-* http_method
-* request_time
-* response_status
+* Accepting incoming requests
+* Routing requests based on URL path
+* Securing APIs using API key validation
+* Logging request details into the database
+* Returning structured JSON responses
 
 ---
 
-## 🔗 API Endpoints
+## ⚙️ Tech Stack
 
-### 👤 Users
-
-* `GET /api/users`
-* `GET /api/users/{id}`
-* `POST /api/users`
-* `DELETE /api/users/{id}`
-
-### 📦 Products
-
-* `GET /api/products`
-* `GET /api/products/{id}`
-* `POST /api/products`
-* `DELETE /api/products/{id}`
-
-### 🛒 Orders
-
-* `GET /api/orders`
-* `GET /api/orders/{id}`
-* `POST /api/orders`
-* `DELETE /api/orders/{id}`
-
-### 📊 Logs
-
-* `GET /api/logs`
+| Technology      | Description             |
+| --------------- | ----------------------- |
+| Java 17         | Programming Language    |
+| Spring Boot     | Backend Framework       |
+| Spring Web      | REST API Development    |
+| Spring Data JPA | Database Interaction    |
+| MySQL           | Database                |
+| Lombok          | Reduce Boilerplate Code |
+| Maven           | Build Tool              |
 
 ---
 
-## 🔐 API Security
+## 🏗️ Architecture
 
-All APIs require the following header:
+The project follows a **layered architecture**:
 
+Controller → Handles HTTP requests
+Service → Contains business logic
+Repository → Handles database operations
+Entity → Maps database tables
+
+---
+
+## 🔐 API Security (API Key Filter)
+
+A custom filter (`OncePerRequestFilter`) is implemented to:
+
+* Validate the presence of `X-API-KEY` in every request
+* Reject unauthorized requests with **401 Unauthorized**
+
+### Required Header:
+
+```
 X-API-KEY: secret123
+```
+
+---
+
+## 🔄 Request Routing
+
+The API Gateway routes requests based on URL paths:
+
+| Endpoint      | Service         |
+| ------------- | --------------- |
+| /api/users    | User Service    |
+| /api/products | Product Service |
+| /api/orders   | Order Service   |
+| /api/logs     | Logging Service |
+
+---
+
+## 📊 Logging Mechanism
+
+Every request is logged in the database with:
+
+* Request URL
+* HTTP Method
+* Request Timestamp
+* Response Status
+
+### Table: `request_logs`
+
+| Field           | Description   |
+| --------------- | ------------- |
+| id              | Primary Key   |
+| request_url     | API URL       |
+| http_method     | HTTP Method   |
+| request_time    | Timestamp     |
+| response_status | Response Code |
+
+---
+
+## 🗄️ Database Schema
+
+### 1. Users Table
+
+| Field      | Type      |
+| ---------- | --------- |
+| id         | Long      |
+| name       | String    |
+| email      | String    |
+| role       | String    |
+| created_at | Timestamp |
+
+---
+
+### 2. Products Table
+
+| Field      | Type      |
+| ---------- | --------- |
+| id         | Long      |
+| name       | String    |
+| category   | String    |
+| price      | Double    |
+| stock      | Integer   |
+| created_at | Timestamp |
+
+---
+
+### 3. Orders Table
+
+| Field       | Type      |
+| ----------- | --------- |
+| id          | Long      |
+| user_id     | Long      |
+| product     | String    |
+| quantity    | Integer   |
+| total_price | Double    |
+| status      | String    |
+| created_at  | Timestamp |
+
+---
+
+## 📡 API Endpoints
+
+### 👤 User APIs
+
+* GET `/api/users`
+* GET `/api/users/{id}`
+* POST `/api/users`
+* DELETE `/api/users/{id}`
+
+---
+
+### 📦 Product APIs
+
+* GET `/api/products`
+* GET `/api/products/{id}`
+* POST `/api/products`
+* DELETE `/api/products/{id}`
+
+---
+
+### 🛒 Order APIs
+
+* GET `/api/orders`
+* GET `/api/orders/{id}`
+* POST `/api/orders`
+* DELETE `/api/orders/{id}`
+
+---
+
+### 📜 Logs API
+
+* GET `/api/logs`
+
+---
+
+## ✅ Validation
+
+Input validation is implemented using:
+
+* `@NotBlank`
+* `@Email`
+* `@Valid`
+
+Ensures:
+
+* No empty fields
+* Proper email format
+
+---
+
+## ⚠️ Exception Handling
+
+A global exception handler is implemented to:
+
+* Return clean JSON error responses
+* Handle runtime and validation exceptions
+
+Example:
+
+```json
+{
+  "message": "User not found",
+  "status": 404
+}
+```
 
 ---
 
 ## ▶️ How to Run the Project
 
-1. Clone the repository
+### Step 1: Clone Repository
 
-2. Open in IntelliJ or any IDE
+```
+git clone https://github.com/tarunyendu-developer/api-gateway-simulation.git
+```
 
-3. Configure MySQL in `application.properties`:
+### Step 2: Configure Database
 
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/api_gateway_db
-   spring.datasource.username=root
-   spring.datasource.password=your_password
-   ```
+Update `application.properties`:
 
-4. Run the application
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/api_gateway_db
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
 
-5. Test APIs using Postman
+### Step 3: Run Application
+
+* Open project in IntelliJ
+* Run main class
 
 ---
 
 ## 🧪 Testing
 
-* All APIs tested using Postman
-* Verified:
+APIs tested using Postman with:
 
-    * CRUD operations
-    * API key validation
-    * Request logging
-    * Error handling
-    * Validation
+* Valid API Key
+* Invalid API Key
+* Valid and invalid inputs
+
+Verified:
+
+* CRUD operations
+* Security filter
+* Logging functionality
+* Validation errors
+* Exception handling
 
 ---
 
 ## 📦 Deliverables
 
-* Complete Spring Boot source code
+* Complete Spring Boot project
 * Working REST APIs
-* Database integration (MySQL)
+* MySQL database integration
+* API key security
 * Request logging system
-* API security using API key
+* Validation and exception handling
 
 ---
 
-## 🎯 Conclusion
+## 🎯 Project Highlights
 
-This project successfully simulates an API Gateway by handling routing, security, logging, and request processing. It follows best practices in backend development and demonstrates strong understanding of Spring Boot and RESTful API design.
+* Simulates real API Gateway behavior
+* Implements security using filters
+* Logs request lifecycle data
+* Follows clean architecture
+* Uses DTO for better API design
 
 ---
 
 ## 👨‍💻 Author
 
-Tarun Yendu
+**Tarun Yendu**
