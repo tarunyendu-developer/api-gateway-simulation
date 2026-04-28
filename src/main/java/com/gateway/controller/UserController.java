@@ -1,9 +1,10 @@
 package com.gateway.controller;
 
-import com.gateway.entity.User;
+import com.gateway.dto.UserDTO;
 import com.gateway.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -16,20 +17,20 @@ public class UserController {
 
     //  GET all users
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     //  GET user by ID
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    public UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     //  POST create user
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserDTO createUser(@Valid @RequestBody UserDTO userDTO) {
+        return userService.createUser(userDTO);
     }
 
     //  DELETE user
