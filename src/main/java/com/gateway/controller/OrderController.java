@@ -1,7 +1,8 @@
 package com.gateway.controller;
 
-import com.gateway.entity.Order;
+import com.gateway.dto.OrderDTO;
 import com.gateway.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +17,20 @@ public class OrderController {
 
     //  GET all orders
     @GetMapping
-    public List<Order> getAllOrders() {
+    public List<OrderDTO> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     //  GET order by ID
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable Long id) {
+    public OrderDTO getOrderById(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 
     //  POST create order
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return orderService.createOrder(order);
+    public OrderDTO createOrder(@Valid @RequestBody OrderDTO orderDTO) {
+        return orderService.createOrder(orderDTO);
     }
 
     //  DELETE order

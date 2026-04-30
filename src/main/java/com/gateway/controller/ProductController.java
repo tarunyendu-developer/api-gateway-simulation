@@ -1,7 +1,8 @@
 package com.gateway.controller;
 
-import com.gateway.entity.Product;
+import com.gateway.dto.ProductDTO;
 import com.gateway.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +17,20 @@ public class ProductController {
 
     //  GET all products
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
     //  GET product by ID
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public ProductDTO getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
     //  POST create product
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public ProductDTO createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        return productService.createProduct(productDTO);
     }
 
     //  DELETE product
